@@ -15,7 +15,7 @@ which = get_word(animals)
 print(which)
 
 def play(word):
-    guess_word = "_ " * led(word)
+    guess_word = "_ " * len(word)
     guessed = False
     guessed_letters = []
     guessed_words = []
@@ -43,17 +43,27 @@ def play(word):
                 guess_word = "".join(word_as_list)
                 if "_" not in guess_word:
                     guessed = True
-        
         elif len(guess) == len(word) and guess.isalpha():
-        
+            if guess in guessed_words:
+                print("You already guessed", guess)
+            elif guess != word:
+                print(guess, "is not the right word")
+                guessed_words.append(guess)
+                tries -= 1
+            else:
+                guessed = True
+                guess_word = word
         else:
-            print("Not a valid guess")
+        print("Not a valid guess")
         print(display_hangman(lives))
         print(guess_word)
         print("\n")
-
-
-
+    if guessed:
+        print("Congratulations! You got the word.\n")
+        print(win)
+    else
+    print("Sorry. You're out of lives.\n")
+    print(lose)
 
 
 
