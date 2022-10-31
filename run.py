@@ -7,7 +7,7 @@ import operator
 import os
 
 def clear_screen():
-    os.system("cls")
+     os.system('cls' if os.name == 'nt' else 'clear')
 
 def get_word(p_choice):
     word = random.choice(p_choice)
@@ -38,6 +38,24 @@ def game_menu():
             print("Must choose 1, 2 or 3 !")
 
 
+def show_rules():
+    clear_screen()
+    print("""
+    You must guess the word.
+    Each right guess fills in the spaces.
+    Each wrong guess equals a life lost.
+    When you run out of lives, you die.
+    Good luck
+    """)
+    while True:  
+        user_choice = input("Press E to return to menu:\n")
+        if user_choice.upper() == "E":
+            game_menu()
+        elif user_choice != "E":
+            print(Fore.RED + "You must press E to exit." + Fore.WHITE)
+
+
+
 def choose_category():
     """
     Player can chose category of words to guess from.
@@ -46,24 +64,35 @@ def choose_category():
     print("Select a category:")
     print("Press 1: " + Fore.RED + "Animals")
     print(Fore.WHITE + "Press 2: " + Fore.RED + "Fruits")
-    print(Fore.WHITE + "Press 3: " + Fore.RED + "Movie Genres")
-
-which = get_word(animals)
-
-print(which)
+    print(Fore.WHITE + "Press 3: " + Fore.RED + "Movie Genres" + Fore.WHITE)
+    while True:  
+        user_choice = input("\n")
+        if user_choice == "1":
+            word = get_word(animals)
+            play(word)
+        elif user_choice == "2":
+            word = get_word(fruits)
+            play(word)
+        elif user_choice == "3":
+            word = get_word(movies)
+            play(word)
+        else:
+            print("Please input 1, 2 or 3 to select a category")    
+        
 
 def play(word):
+    clear_screen()
     guess_word = "_ " * len(word)
     guessed = False
     guessed_letters = []
     guessed_words = []
     lives = 6
     print("Let's play!")
-    print(display_hangman(lives))
+    print(hangman_lives(lives))
     print(guess_word)
     print("\n")
     while not guessed and lives > 0:
-        guess = input ("Please guess a letter or a word: ").upper()
+        guess = input("Please guess a letter or a word: ").upper()
         if len(guess) == 1 and guess.isalpha():
             if guess in guessed_letters:
                 print("You've already tried this one ", guess)
@@ -87,19 +116,21 @@ def play(word):
             elif guess != word:
                 print(guess, "is not the right word")
                 guessed_words.append(guess)
-                tries -= 1
+                lives -= 1
             else:
                 guessed = True
                 guess_word = word
         else:
             print("Not a valid guess")
-            print(display_hangman(lives))
+            print(hangman_lives(lives))
             print(guess_word)
             print("\n")
     if guessed:
+        clear_screen()
         print("Congratulations! You got the word.\n")
         print(win)
     else:
+        clear_screen()
         print("Sorry. You're out of lives.\n")
         print(lose)
 
@@ -111,74 +142,74 @@ def hangman_lives(lives):
     """
     lives_left = [
         """
-        ___________
-        |/        |
-        |         O
-        |        /|\\
-        |         |
-        |        / \\
-        |\\
-        ========
+___________
+|/        |
+|         O
+|        /|\\
+|         |
+|        / \\
+|\\
+========
         """,
         """
-        ___________
-        |/        |
-        |         O
-        |        /|\\
-        |         |
-        |        /
-        |\\
-        ========
+___________
+|/        |
+|         O
+|        /|\\
+|         |
+|        /
+|\\
+========
         """,
         """
-        __________
-        |/        |
-        |         O
-        |        /|\\
-        |         |
-        |
-        |\\
-        ========
+__________
+|/        |
+|         O
+|        /|\\
+|         |
+|
+|\\
+========
         """,
         """
-        __________
-        |/        |
-        |         O
-        |        /|
-        |         |
-        |
-        |\\
-        ========
+__________
+|/        |
+|         O
+|        /|
+|         |
+|
+|\\
+========
         """,
         """
-        __________
-        |/        |
-        |         O
-        |         |
-        |         |
-        |
-        |\\
-        ========
+__________
+|/        |
+|         O
+|         |
+|         |
+|
+|\\
+========
         """,
         """
-        __________
-        |/        |
-        |         O
-        |
-        |
-        |
-        |\\
-        ========
+__________
+|/        |
+|         O
+|
+|
+|
+|\\
+========
         """,
         """
-        __________
-        |/
-        |
-        |
-        |
-        |
-        |\\
-        ========
+__________
+|/
+|
+|
+|
+|
+|\\
+========
         """
     ]
     return lives_left[lives]
