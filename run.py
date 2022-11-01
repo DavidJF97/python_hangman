@@ -105,6 +105,7 @@ def play(word):
     print("\n")
     while not guessed and lives > 0:
         guess = input("Please guess a letter or a word: \n").upper()
+        clear_screen()
         if len(guess) == 1 and guess.isalpha():
             if guess in guessed_letters:
                 print("You've already tried the letter " + Fore.RED + guess + Fore.WHITE)
@@ -135,6 +136,11 @@ def play(word):
         else:
             print("Not a valid guess")
         print(hangman_lives(lives))
+        if lives > 1:
+            print("You have " + Fore.RED + str(lives) + Fore.WHITE + " chances left.")
+        elif lives == 1:
+            print(Fore.RED + "This is your last chance." + Fore.WHITE)
+        print("Your guesses so far: " + str(guessed_letters) )
         print(guess_word)
         print("\n")
     if guessed:
