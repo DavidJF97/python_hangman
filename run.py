@@ -49,18 +49,23 @@ def show_rules():
     """
     clear_screen()
     print("""
-    You must guess the word.
-    Each right guess fills in the spaces.
-    Each wrong guess equals a life lost.
-    When you run out of lives, you die.
-    Good luck
+Rules of the game:\n
+You must guess the word to win.
+Each right guess fills in the spaces.
+Each wrong guess equals a life lost.
+If you guess the word, you live.
+If you run out of lives, you die.
+Good luck.
     """)
     while True:  
-        user_choice = input("Press E to return to menu:\n")
-        if user_choice.upper() == "E":
+        user_choice = input("Press M to return to Menu or P to Play:\n")
+        if user_choice.upper() == "M":
             game_menu()
-        elif user_choice != "E":
-            print(Fore.RED + "You must press E to exit." + Fore.WHITE)
+        elif user_choice.upper() == "P":
+            choose_category()
+        else:
+            print(Fore.RED + "You must press M or E." + Fore.WHITE)
+
 
 
 def choose_category():
