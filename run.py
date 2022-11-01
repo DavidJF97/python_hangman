@@ -6,19 +6,24 @@ import sys
 import operator
 import os
 
+
 def clear_screen():
-     os.system('cls' if os.name == 'nt' else 'clear')
+    """
+    method for clearing the terminal.
+    """
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def get_word(p_choice):
     word = random.choice(p_choice)
     return word.upper()
 
-# if else statement for players choice of category here
 
 def game_menu():
     """
-    Game menu, player can chose to start game, read the rules or exit
+    Game menu, player can chose to start game, read the rules or exit.
     """
+    clear_screen()
     print(header)
     print ("Press " + Fore.RED + "1" + Fore.WHITE +
            " to start the game")
@@ -39,6 +44,9 @@ def game_menu():
 
 
 def show_rules():
+    """
+    Print rules of hangman for the player
+    """
     clear_screen()
     print("""
     You must guess the word.
@@ -53,7 +61,6 @@ def show_rules():
             game_menu()
         elif user_choice != "E":
             print(Fore.RED + "You must press E to exit." + Fore.WHITE)
-
 
 
 def choose_category():
@@ -78,11 +85,11 @@ def choose_category():
             play(word)
         else:
             print("Please input 1, 2 or 3 to select a category")    
-        
+       
 
 def play(word):
     clear_screen()
-    guess_word = "_ " * len(word)
+    guess_word = "_" * len(word)
     guessed = False
     guessed_letters = []
     guessed_words = []
@@ -92,16 +99,16 @@ def play(word):
     print(guess_word)
     print("\n")
     while not guessed and lives > 0:
-        guess = input("Please guess a letter or a word: ").upper()
+        guess = input("Please guess a letter or a word: \n").upper()
         if len(guess) == 1 and guess.isalpha():
             if guess in guessed_letters:
-                print("You've already tried this one ", guess)
+                print("You've already tried the letter " + Fore.RED + guess + Fore.WHITE)
             elif guess not in word:
-                print("Your guess is not in the word.")
+                print("Sorry " + Fore.RED + guess + Fore.WHITE + " is not in the word.")
                 lives -= 1
                 guessed_letters.append(guess)
             else:
-                print("Good guess", guess, "is in the word.")
+                print("Good guess " + Fore.BLUE + guess + Fore.WHITE + " is in the word.")
                 guessed_letters.append(guess)
                 word_as_list = list(guess_word)
                 indices = [i for i, letter in enumerate(word) if letter == guess]
@@ -112,9 +119,9 @@ def play(word):
                     guessed = True
         elif len(guess) == len(word) and guess.isalpha():
             if guess in guessed_words:
-                print("You already guessed", guess)
+                print("You already guessed " + Fore.BLUE + guess + Fore.WHITE)
             elif guess != word:
-                print(guess, "is not the right word")
+                print(Fore.RED + guess + Fore.WHITE + " is not the right word")
                 guessed_words.append(guess)
                 lives -= 1
             else:
@@ -122,9 +129,9 @@ def play(word):
                 guess_word = word
         else:
             print("Not a valid guess")
-            print(hangman_lives(lives))
-            print(guess_word)
-            print("\n")
+        print(hangman_lives(lives))
+        print(guess_word)
+        print("\n")
     if guessed:
         clear_screen()
         print("Congratulations! You got the word.\n")
