@@ -1,10 +1,10 @@
 import random
-from colorama import init, Fore, Back
-from game_graphics import header, win, lose
-from words import animals, fruits, movies
 import sys
 import operator
 import os
+from colorama import Fore
+from game_graphics import header, win, lose
+from words import animals, fruits, movies
 
 
 def clear_screen():
@@ -15,6 +15,9 @@ def clear_screen():
 
 
 def get_word(p_choice):
+    """
+    Picks a random word from the list based on the player's choice.
+    """
     word = random.choice(p_choice)
     return word.upper()
 
@@ -25,9 +28,9 @@ def game_menu():
     """
     clear_screen()
     print(header)
-    print ("Press " + Fore.RED + "1" + Fore.WHITE +
+    print("Press " + Fore.RED + "1" + Fore.WHITE +
            " to start the game")
-    print ("Press " + Fore.RED + "2" + Fore.WHITE +
+    print("Press " + Fore.RED + "2" + Fore.WHITE +
            " to read the rules")
     print("Press " + Fore.RED + "3" + Fore.WHITE +
           " to exit game")
@@ -38,9 +41,9 @@ def game_menu():
         elif user_choice == "2":
             show_rules()
         elif user_choice == "3":
-             sys.exit()
+            sys.exit()
         else:
-            print("Must choose 1, 2 or 3 !")
+            print("Must choose 1, 2 or 3")
 
 
 def show_rules():
@@ -57,7 +60,7 @@ If you guess the word, you live.
 If you run out of lives, you die.
 Good luck.
     """)
-    while True:  
+    while True:
         user_choice = input("Press M to return to Menu or P to Play:\n")
         if user_choice.upper() == "M":
             game_menu()
@@ -67,16 +70,18 @@ Good luck.
             print(Fore.RED + "You must press M or E." + Fore.WHITE)
 
 
-
 def choose_category():
     """
     Player can chose category of words to guess from.
     """
     clear_screen()
     print("Select a category:")
+    print("\n")
     print("Press 1: " + Fore.RED + "Animals")
     print(Fore.WHITE + "Press 2: " + Fore.RED + "Fruits")
     print(Fore.WHITE + "Press 3: " + Fore.RED + "Movie Genres" + Fore.WHITE)
+    print("\n")
+    print("Press 0 to exit to Menu")
     while True:  
         user_choice = input("\n")
         if user_choice == "1":
@@ -88,11 +93,16 @@ def choose_category():
         elif user_choice == "3":
             word = get_word(movies)
             play(word)
+        elif user_choice == "0":
+            game_menu()
         else:
-            print("Please input 1, 2 or 3 to select a category")    
-       
+            print("Please only use inputs from the choices given above.")
+
 
 def play(word):
+    """
+    Runs the actual hangman game.
+    """
     clear_screen()
     guess_word = "_" * len(word)
     guessed = False
@@ -140,18 +150,37 @@ def play(word):
             print("You have " + Fore.RED + str(lives) + Fore.WHITE + " chances left.")
         elif lives == 1:
             print(Fore.RED + "This is your last chance." + Fore.WHITE)
-        print("Your guesses so far: " + str(guessed_letters) )
+        print("You've used: " + Fore.BLUE + " ".join(guessed_letters) + Fore.WHITE )
         print(guess_word)
         print("\n")
     if guessed:
         clear_screen()
-        print("Congratulations! You got the word.\n")
+        print("Congratulations! You got the word.")
         print(win)
+        play_again()
     else:
         clear_screen()
-        print("Sorry. You're out of lives.\n")
+        print("Sorry. You're out of lives. The word was: " + word)
         print(lose)
+        play_again()
 
+
+def play_again():
+    """
+    Ask the player if they would like to play again.
+    """
+    while True:
+        replay = input("""
+Press P to play again.  \n
+Press M to exit to menu.\n
+""").upper()
+        if replay == "P":
+            choose_category()
+        elif replay == "M":
+            game_menu()
+        else:
+            clear_screen()
+            print("Please only use prompted inputs.")
 
 
 def hangman_lives(lives):
@@ -232,7 +261,10 @@ __________
     ]
     return lives_left[lives]
 
+
 def main():
     game_menu()
+    play_again()
+
 
 main()
