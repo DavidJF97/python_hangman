@@ -1,7 +1,7 @@
 import random
 import sys
-import operator
 import os
+from time import sleep
 from colorama import Fore
 from game_graphics import header, win, lose
 from words import animals, fruits, movies
@@ -29,21 +29,25 @@ def game_menu():
     clear_screen()
     print(header)
     print("Press " + Fore.RED + "1" + Fore.WHITE +
-           " to start the game")
+          " to start the game")
     print("Press " + Fore.RED + "2" + Fore.WHITE +
-           " to read the rules")
+          " to read the rules")
     print("Press " + Fore.RED + "3" + Fore.WHITE +
           " to exit game")
     while True:
-        user_choice = input("\n")
-        if user_choice == "1":
-            choose_category()
-        elif user_choice == "2":
-            show_rules()
-        elif user_choice == "3":
-            sys.exit()
-        else:
-            print("Must choose 1, 2 or 3")
+        try:
+            user_choice = int(input("\n"))
+            if user_choice == 1:
+                choose_category()
+            elif user_choice == 2:
+                show_rules()
+            elif user_choice == 3:
+                sys.exit()
+            elif user_choice != 1 or 2 or 3:
+                print("Must choose 1, 2 or 3")
+        except ValueError:
+            print("You must choose " + Fore.RED + "NUMBERS" + Fore.WHITE +
+                  " 1, 2 or 3")
 
 
 def show_rules():
@@ -82,21 +86,25 @@ def choose_category():
     print(Fore.WHITE + "Press 3: " + Fore.RED + "Movie Genres" + Fore.WHITE)
     print("\n")
     print("Press 0 to exit to Menu")
-    while True:  
-        user_choice = input("\n")
-        if user_choice == "1":
-            word = get_word(animals)
-            play(word)
-        elif user_choice == "2":
-            word = get_word(fruits)
-            play(word)
-        elif user_choice == "3":
-            word = get_word(movies)
-            play(word)
-        elif user_choice == "0":
-            game_menu()
-        else:
-            print("Please only use inputs from the choices given above.")
+    while True:
+        try:
+            user_choice = int(input("\n"))
+            if user_choice == 1:
+                word = get_word(animals)
+                play(word)
+            elif user_choice == 2:
+                word = get_word(fruits)
+                play(word)
+            elif user_choice == 3:
+                word = get_word(movies)
+                play(word)
+            elif user_choice == 0:
+                game_menu()
+            elif user_choice != 1 or 2 or 3 or 0:
+                print("Must choose 1, 2, 3 or 0")
+        except ValueError:
+            print("Please only use " + Fore.RED + "NUMBER"
+                  + Fore.WHITE + " from the choices given above.")
 
 
 def play(word):
@@ -118,16 +126,20 @@ def play(word):
         clear_screen()
         if len(guess) == 1 and guess.isalpha():
             if guess in guessed_letters:
-                print("You've already tried the letter " + Fore.RED + guess + Fore.WHITE)
+                print("You've already tried the letter "
+                      + Fore.RED + guess + Fore.WHITE)
             elif guess not in word:
-                print("Sorry " + Fore.RED + guess + Fore.WHITE + " is not in the word.")
+                print("Sorry " + Fore.RED + guess + Fore.WHITE +
+                      " is not in the word.")
                 lives -= 1
                 guessed_letters.append(guess)
             else:
-                print("Good guess " + Fore.BLUE + guess + Fore.WHITE + " is in the word.")
+                print("Good guess " + Fore.BLUE + guess + Fore.WHITE +
+                      " is in the word.")
                 guessed_letters.append(guess)
                 word_as_list = list(guess_word)
-                indices = [i for i, letter in enumerate(word) if letter == guess]
+                indices = [i for i, letter in enumerate(word)
+                           if letter == guess]
                 for index in indices:
                     word_as_list[index] = guess
                 guess_word = "".join(word_as_list)
@@ -147,10 +159,12 @@ def play(word):
             print("Not a valid guess")
         print(hangman_lives(lives))
         if lives > 1:
-            print("You have " + Fore.RED + str(lives) + Fore.WHITE + " chances left.")
+            print("You have " + Fore.RED + str(lives) + Fore.WHITE +
+                  " chances left.")
         elif lives == 1:
             print(Fore.RED + "This is your last chance." + Fore.WHITE)
-        print("You've used: " + Fore.BLUE + " ".join(guessed_letters) + Fore.WHITE )
+        print("You've used: " + Fore.BLUE + " ".join(guessed_letters)
+              + Fore.WHITE)
         print(guess_word)
         print("\n")
     if guessed:
@@ -171,8 +185,7 @@ def play_again():
     """
     while True:
         replay = input("""
-Press P to play again.  \n
-Press M to exit to menu.\n
+Press P to play again. Press M to exit to menu.\n
 """).upper()
         if replay == "P":
             choose_category()
@@ -264,7 +277,6 @@ __________
 
 def main():
     game_menu()
-    play_again()
 
 
 main()
