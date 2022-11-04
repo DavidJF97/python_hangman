@@ -1,7 +1,6 @@
 import random
 import sys
 import os
-from time import sleep
 from colorama import Fore
 from game_graphics import header, win, lose
 from words import animals, fruits, movies
@@ -275,8 +274,4 @@ __________
     return lives_left[lives]
 
 
-def main():
-    game_menu()
-
-
-main()
+game_menu()
