@@ -117,7 +117,7 @@ I manually tested the project using the following methods:
 
 ## Bugs
 
-* During development I had an issue with the hangman display not updating with each guess. On further inspection of the code I realused I had incorrectly indented it into the ebove if else stament. Takimg it out solved this issue.
+* During development I had an issue with the hangman display not updating with each guess. On further inspection of the code I realised I had incorrectly indented it into the above if elif else stament. Taking it out solved this issue.
 
 No Bugs remaining
 
