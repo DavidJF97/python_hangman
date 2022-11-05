@@ -124,6 +124,9 @@ def play(word):
         guess = input("Please guess a letter or a word: \n").upper()
         clear_screen()
         if len(guess) == 1 and guess.isalpha():
+            """
+            If the user guesses a letter.
+            """
             if guess in guessed_letters:
                 print("You've already tried the letter "
                       + Fore.RED + guess + Fore.WHITE)
@@ -145,6 +148,9 @@ def play(word):
                 if "_" not in guess_word:
                     guessed = True
         elif len(guess) == len(word) and guess.isalpha():
+            """
+            If the player guesses a word, same length as the hidden word
+            """
             if guess in guessed_words:
                 print("You already guessed " + Fore.BLUE + guess + Fore.WHITE)
             elif guess != word:
@@ -155,6 +161,9 @@ def play(word):
                 guessed = True
                 guess_word = word
         else:
+            """
+            For any other inputs
+            """
             print("Not a valid guess")
         print(hangman_lives(lives))
         if lives > 1:
