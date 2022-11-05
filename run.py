@@ -70,7 +70,7 @@ Good luck.
         elif user_choice.upper() == "P":
             choose_category()
         else:
-            print(Fore.RED + "You must press M or E." + Fore.WHITE)
+            print(Fore.RED + "You must press M or P." + Fore.WHITE)
 
 
 def choose_category():
